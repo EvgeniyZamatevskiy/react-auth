@@ -2,7 +2,9 @@ import {createSlice} from "@reduxjs/toolkit"
 
 const initialState = {
   timeToResubmit: 60,
-  code: 0
+  code: null,
+  isPhoneNumberVerification: false,
+  phoneNumber: null
 }
 
 const authSlice = createSlice({
@@ -17,7 +19,13 @@ const authSlice = createSlice({
     },
     setCode(state, action) {
       state.code = action.payload
-    }
+    },
+    sendCodeToPhoneNumber(state, action) {
+      state.phoneNumber = action.payload
+    },
+    setPhoneNumberVerification(state, action) {
+      state.isPhoneNumberVerification = action.payload
+    },
   },
 })
 
@@ -25,6 +33,8 @@ export const {
   setTimeToResubmit,
   resetTimeToResubmit,
   setCode,
+  sendCodeToPhoneNumber,
+  setPhoneNumberVerification
 } = authSlice.actions
 
 export default authSlice.reducer
