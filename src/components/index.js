@@ -1,2 +1,2 @@
-export { Auth } from './auth'
-export { PhoneVerification } from './phoneVerification'
+export {Auth} from "./auth"
+export {PhoneVerification} from "./phoneVerification"

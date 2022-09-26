@@ -1,40 +1,40 @@
-@import '../../styles/sass/mixins.scss';
+@import "../../styles/sass/mixins.scss";
 
 .phoneVerification {
-	width: 100%;
-	height: 100%;
-	@include flex(row, center, center);
-	background-color: rgb(240, 240, 240);
+  width: 100%;
+  height: 100%;
+  @include flex(row, center, center);
+  background-color: rgb(240, 240, 240);
 
-	&__container {
-		width: 388px;
-		height: 383px;
-		background-color: #FFF;
-		padding: 40px;
-		border-radius: 10px;
-	}
+  &__container {
+    width: 388px;
+    height: 383px;
+    background-color: #FFF;
+    padding: 40px;
+    border-radius: 10px;
+  }
 
-	&__title {
-		font-weight: 700;
-	}
+  &__title {
+    font-weight: 700;
+  }
 
-	.notification {
-		margin-top: 35px;
+  .notification {
+    margin-top: 35px;
 
-		&__phone {
-			font-weight: 700;
-		}
-	}
+    &__phone {
+      font-weight: 700;
+    }
+  }
 
-	&__form {
-		margin-top: 35px;
-		@include flex(column, space-between, stretch);
-		height: 150px;
-	}
+  &__form {
+    margin-top: 35px;
+    @include flex(column, space-between, stretch);
+    height: 150px;
+  }
 
-	.time {
-		margin-top: 10px;
-		font-size: 14px;
-		color: #8B8B8B;
-	}
+  .time {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #8B8B8B;
+  }
 }
