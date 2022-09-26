@@ -4,6 +4,7 @@ import {EMPTY_STRING} from "../../const"
 const initialState = {
   timeToResubmit: 60,
   code: EMPTY_STRING,
+  errorMessage: "", // Неверные данные доступа
   phoneNumberVerificationStatus: "idle",
   phoneNumber: EMPTY_STRING
 }

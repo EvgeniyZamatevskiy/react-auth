@@ -14,6 +14,10 @@ export const PhoneVerification = () => {
 
   const timeToResubmit = useSelector(state => state.auth.timeToResubmit)
   const code = useSelector(state => state.auth.code)
+  const phoneNumberVerificationStatus = useSelector(state => state.auth.phoneNumberVerificationStatus)
+  const errorMessage = useSelector(state => state.auth.errorMessage)
+
+  const isError = phoneNumberVerificationStatus === "error"
 
   useEffect(() => {
     const timerId = timeToResubmit > 0 && setInterval(() => {
@@ -52,6 +56,8 @@ export const PhoneVerification = () => {
             variant="outlined"
             color="secondary"
             label="Код из СМС"
+            helperText={errorMessage}
+            error={isError}
             autoFocus
             required
           />
