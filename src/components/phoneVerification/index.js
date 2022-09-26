@@ -12,11 +12,9 @@ export const PhoneVerification = () => {
 
   const dispatch = useDispatch()
 
-  const timeToResubmit = useSelector(state => state.auth.timeToResubmit)
-  const code = useSelector(state => state.auth.code)
-  const phoneNumberVerificationStatus = useSelector(state => state.auth.phoneNumberVerificationStatus)
-  const errorMessage = useSelector(state => state.auth.errorMessage)
-
+  const auth = useSelector(state => state.auth)
+  
+  const {timeToResubmit, code, phoneNumberVerificationStatus, errorMessage} = auth
   const isError = phoneNumberVerificationStatus === "error"
 
   useEffect(() => {
