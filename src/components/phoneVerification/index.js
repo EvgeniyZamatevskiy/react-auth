@@ -6,7 +6,6 @@ import {resetTimeToResubmit, setCode, setTimeToResubmit} from "../../redux/auth/
 import {selectCode, selectTimeToResubmit} from "../../redux/auth/selectors"
 import "./phoneVerification.scss"
 
-const DELAY = 1000
 const NON_DIGIT = "/[^\d]/g"
 const EMPTY_STRING = ""
 
@@ -20,7 +19,7 @@ export const PhoneVerification = () => {
   useEffect(() => {
     const timerId = timeToResubmit > 0 && setInterval(() => {
       dispatch(setTimeToResubmit())
-    }, DELAY)
+    }, 1000)
 
     return () => clearInterval(timerId)
   }, [timeToResubmit])
