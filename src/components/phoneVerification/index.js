@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from "react"
 import {Button, TextField} from "@mui/material"
 import {getCurrentTime} from "../../utils"
+import {useDispatch, useSelector} from "react-redux"
+import {resetTimeToResubmit, setCode, setTimeToResubmit} from "../../redux/auth/slice"
+import {selectCode, selectTimeToResubmit} from "../../redux/auth/selectors"
 import "./phoneVerification.scss"
 
 const DELAY = 1000
@@ -9,25 +12,29 @@ const EMPTY_STRING = ""
 
 export const PhoneVerification = () => {
 
-  const [time, setTime] = useState(60)
-  const [code, setCode] = useState(0)
+  const dispatch = useDispatch()
+
+  const timeToResubmit = useSelector(selectTimeToResubmit)
+  const code = useSelector(selectCode)
 
   useEffect(() => {
-    const timerId = time > 0 && setInterval(() => {
-      setTime(prev => prev - 1)
+    const timerId = timeToResubmit > 0 && setInterval(() => {
+      dispatch(setTimeToResubmit())
     }, DELAY)
 
     return () => clearInterval(timerId)
-  }, [time])
+  }, [timeToResubmit])
 
   const onInputChange = (event) => {
     const {value} = event.currentTarget
     const integerValue = parseInt(value.toString().replace(NON_DIGIT, EMPTY_STRING))
 
-    setCode(integerValue)
+    if (!isNaN(integerValue)) {
+      dispatch(setCode(integerValue))
+    }
   }
 
-  const onSetInitialValueTimeClick = () => setTime(60)
+  const onResetTimeToResubmitClick = () => dispatch(resetTimeToResubmit())
 
   return (
     <div className="phoneVerification">
@@ -51,18 +58,18 @@ export const PhoneVerification = () => {
             required
           />
           <Button
-            disabled={time > 0}
+            disabled={timeToResubmit > 0}
             type="submit"
             variant="contained"
             color="secondary"
-            onClick={onSetInitialValueTimeClick}
+            onClick={onResetTimeToResubmitClick}
           >
             Получить повторно
           </Button>
         </form>
 
         <div className="time">
-          {time > 0 && `Повторная отправка доступна через ${getCurrentTime(time)}`}
+          {timeToResubmit > 0 && `Повторная отправка доступна через ${getCurrentTime(timeToResubmit)}`}
         </div>
       </div>
     </div>

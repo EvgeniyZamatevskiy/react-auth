@@ -4,8 +4,8 @@ import {Auth, PhoneVerification} from "./components"
 export const App = () => {
   return (
     <div className="App">
-      <Auth/>
-      {/* <PhoneVerification /> */}
+      {/*<Auth/>*/}
+      <PhoneVerification/>
     </div>
   )
 }
