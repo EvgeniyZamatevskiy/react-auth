@@ -3,10 +3,10 @@ import {Button, TextField} from "@mui/material"
 import {getCurrentTime} from "../../utils"
 import {useDispatch, useSelector} from "react-redux"
 import {resetTimeToResubmit, setCode, setTimeToResubmit} from "../../redux/auth/slice"
+import {EMPTY_STRING} from "../../const"
 import "./phoneVerification.scss"
 
 const NON_DIGIT = "/[^\d]/g"
-const EMPTY_STRING = ""
 
 export const PhoneVerification = () => {
 

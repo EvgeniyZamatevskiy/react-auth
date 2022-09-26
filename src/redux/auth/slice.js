@@ -1,10 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit"
+import {EMPTY_STRING} from "../../const"
 
 const initialState = {
   timeToResubmit: 60,
-  code: null,
-  isPhoneNumberVerification: false,
-  phoneNumber: null
+  code: EMPTY_STRING,
+  phoneNumberVerificationStatus: "idle",
+  phoneNumber: EMPTY_STRING
 }
 
 const authSlice = createSlice({
