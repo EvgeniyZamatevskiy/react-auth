@@ -47,7 +47,7 @@ export const PhoneVerification = () => {
 
         <form className="phoneVerification__form">
           <TextField
-            value={code || EMPTY_STRING}
+            value={code}
             onChange={onInputChange}
             variant="outlined"
             color="secondary"
