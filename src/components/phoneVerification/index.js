@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import {Button, TextField} from "@mui/material"
 import {getCurrentTime} from "../../utils"
 import {useDispatch, useSelector} from "react-redux"
 import {resetTimeToResubmit, setCode, setTimeToResubmit} from "../../redux/auth/slice"
-import {selectCode, selectTimeToResubmit} from "../../redux/auth/selectors"
 import "./phoneVerification.scss"
 
 const NON_DIGIT = "/[^\d]/g"
@@ -13,8 +12,8 @@ export const PhoneVerification = () => {
 
   const dispatch = useDispatch()
 
-  const timeToResubmit = useSelector(selectTimeToResubmit)
-  const code = useSelector(selectCode)
+  const timeToResubmit = useSelector(state => state.auth.timeToResubmit)
+  const code = useSelector(state => state.auth.code)
 
   useEffect(() => {
     const timerId = timeToResubmit > 0 && setInterval(() => {
