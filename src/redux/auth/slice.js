@@ -21,11 +21,11 @@ const authSlice = createSlice({
     setCode(state, action) {
       state.code = action.payload
     },
-    sendCodeToPhoneNumber(state, action) {
+    setPhoneNumber(state, action) {
       state.phoneNumber = action.payload
     },
-    setPhoneNumberVerification(state, action) {
-      state.isPhoneNumberVerification = action.payload
+    setPhoneNumberVerificationStatus(state, action) {
+      state.phoneNumberVerificationStatus = action.payload
     },
   },
 })
@@ -34,8 +34,8 @@ export const {
   setTimeToResubmit,
   resetTimeToResubmit,
   setCode,
-  sendCodeToPhoneNumber,
-  setPhoneNumberVerification
+  setPhoneNumber,
+  setPhoneNumberVerificationStatus
 } = authSlice.actions
 
 export default authSlice.reducer
