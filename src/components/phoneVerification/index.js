@@ -2,8 +2,15 @@ import React, {useEffect} from "react"
 import {Button, TextField} from "@mui/material"
 import {getCurrentTime} from "../../utils"
 import {useDispatch, useSelector} from "react-redux"
-import {resetTimeToResubmit, setCode, setTimeToResubmit} from "../../redux/auth/slice"
 import {EMPTY_STRING} from "../../const"
+import {usePhoneNumberVerificationMutation, useSendCodeMutation} from "../../services/CodeService"
+import {
+  resetTimeToResubmit,
+  setCode,
+  setErrorMessage,
+  setPhoneNumberVerificationStatus,
+  setTimeToResubmit
+} from "../../redux/auth/slice"
 import "./phoneVerification.scss"
 
 const NON_DIGIT = "/[^\d]/g"
@@ -13,9 +20,13 @@ export const PhoneVerification = () => {
   const dispatch = useDispatch()
 
   const auth = useSelector(state => state.auth)
-  
-  const {timeToResubmit, code, phoneNumberVerificationStatus, errorMessage} = auth
+
+  const [sendCode] = useSendCodeMutation()
+  const [phoneNumberVerification, {isLoading}] = usePhoneNumberVerificationMutation()
+
+  const {timeToResubmit, code, phoneNumberVerificationStatus, errorMessage, phoneNumber, token} = auth
   const isError = phoneNumberVerificationStatus === "error"
+  const codeLength = code.toString().split(EMPTY_STRING).length
 
   useEffect(() => {
     const timerId = timeToResubmit > 0 && setInterval(() => {
@@ -25,16 +36,39 @@ export const PhoneVerification = () => {
     return () => clearInterval(timerId)
   }, [timeToResubmit])
 
-  const onInputChange = (event) => {
-    const {value} = event.currentTarget
-    const integerValue = parseInt(value.toString().replace(NON_DIGIT, EMPTY_STRING))
+  const handlePhoneNumberVerification = async () => {
+    await phoneNumberVerification({token, code})
+  }
 
-    if (!isNaN(integerValue)) {
-      dispatch(setCode(integerValue))
+  useEffect(() => {
+    if (codeLength === 6) {
+      handlePhoneNumberVerification()
+    }
+  }, [codeLength])
+
+  const resetErrorMessage = () => {
+    if (errorMessage && phoneNumberVerificationStatus === "error") {
+      dispatch(setErrorMessage(EMPTY_STRING))
+      dispatch(setPhoneNumberVerificationStatus("idle"))
     }
   }
 
-  const onResetTimeToResubmitClick = () => dispatch(resetTimeToResubmit())
+  const onInputChange = (event) => {
+    resetErrorMessage()
+
+    const {value} = event.currentTarget
+    const integerValue = parseInt(value.toString().replace(NON_DIGIT, EMPTY_STRING))
+
+    dispatch(setCode(integerValue))
+  }
+
+  const onResendCodeSubmit = async (event) => {
+    event.preventDefault()
+
+    resetErrorMessage()
+    dispatch(resetTimeToResubmit())
+    await sendCode(phoneNumber)
+  }
 
   return (
     <div className="phoneVerification">
@@ -43,13 +77,13 @@ export const PhoneVerification = () => {
 
         <div className="notification">
           <div>Код отправлен</div>
-          <div>На номер <span className="notification__phone">+7 999 999-99-99</span>
+          <div>На номер <span className="notification__phone">{phoneNumber}</span>
           </div>
         </div>
 
-        <form className="phoneVerification__form">
+        <form className="phoneVerification__form" onSubmit={onResendCodeSubmit}>
           <TextField
-            value={code}
+            value={code || EMPTY_STRING}
             onChange={onInputChange}
             variant="outlined"
             color="secondary"

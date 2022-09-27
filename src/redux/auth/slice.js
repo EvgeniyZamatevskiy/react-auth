@@ -1,13 +1,15 @@
 import {createSlice} from "@reduxjs/toolkit"
 import {EMPTY_STRING} from "../../const"
+import {authApi} from "../../services/CodeService"
 
 const initialState = {
   timeToResubmit: 60,
   code: EMPTY_STRING,
-  errorMessage: "", // Неверные данные доступа
+  errorMessage: EMPTY_STRING,
   phoneNumberVerificationStatus: "idle",
   phoneNumber: EMPTY_STRING,
-  authStatus: "auth"
+  authStatus: "auth",
+  token: EMPTY_STRING,
 }
 
 const authSlice = createSlice({
@@ -29,6 +31,32 @@ const authSlice = createSlice({
     setPhoneNumberVerificationStatus(state, action) {
       state.phoneNumberVerificationStatus = action.payload
     },
+    setErrorMessage(state, action) {
+      state.errorMessage = action.payload
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        authApi.endpoints.sendCode.matchFulfilled,
+        (state, {payload}) => {
+          state.token = payload.token
+          state.authStatus = "enterCode"
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.phoneNumberVerification.matchFulfilled,
+        (state, {payload}) => {
+          state.phoneNumberVerificationStatus = "success"
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.phoneNumberVerification.matchRejected,
+        (state, {payload}) => {
+          state.errorMessage = "Неверные данные доступа"
+          state.phoneNumberVerificationStatus = "error"
+        }
+      )
   },
 })
 
@@ -37,6 +65,7 @@ export const {
   resetTimeToResubmit,
   setCode,
   setPhoneNumber,
+  setErrorMessage,
   setPhoneNumberVerificationStatus
 } = authSlice.actions
 
