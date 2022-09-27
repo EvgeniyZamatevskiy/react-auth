@@ -6,7 +6,8 @@ const initialState = {
   code: EMPTY_STRING,
   errorMessage: "", // Неверные данные доступа
   phoneNumberVerificationStatus: "idle",
-  phoneNumber: EMPTY_STRING
+  phoneNumber: EMPTY_STRING,
+  authStatus: "auth"
 }
 
 const authSlice = createSlice({
