@@ -13,8 +13,6 @@ import {
 } from "../../redux/auth/slice"
 import "./phoneVerification.scss"
 
-const NON_DIGIT = "/[^\d]/g"
-
 export const PhoneVerification = () => {
 
   const dispatch = useDispatch()
@@ -26,7 +24,6 @@ export const PhoneVerification = () => {
 
   const {timeToResubmit, code, phoneNumberVerificationStatus, errorMessage, phoneNumber, token} = auth
   const isError = phoneNumberVerificationStatus === "error"
-  const codeLength = code.toString().split(EMPTY_STRING).length
 
   useEffect(() => {
     const timerId = timeToResubmit > 0 && setInterval(() => {
@@ -41,10 +38,10 @@ export const PhoneVerification = () => {
   }
 
   useEffect(() => {
-    if (codeLength === 6) {
+    if (code.length === 6) {
       handlePhoneNumberVerification()
     }
-  }, [codeLength])
+  }, [code.length])
 
   const resetErrorMessage = () => {
     if (errorMessage && phoneNumberVerificationStatus === "error") {
@@ -57,9 +54,10 @@ export const PhoneVerification = () => {
     resetErrorMessage()
 
     const {value} = event.currentTarget
-    const integerValue = parseInt(value.toString().replace(NON_DIGIT, EMPTY_STRING))
 
-    dispatch(setCode(integerValue))
+    if (!isNaN(value)) {
+      dispatch(setCode(value))
+    }
   }
 
   const onResendCodeSubmit = async (event) => {
@@ -83,22 +81,21 @@ export const PhoneVerification = () => {
 
         <form className="phoneVerification__form" onSubmit={onResendCodeSubmit}>
           <TextField
-            value={code || EMPTY_STRING}
+            value={code}
             onChange={onInputChange}
             variant="outlined"
             color="secondary"
             label="Код из СМС"
             helperText={errorMessage}
             error={isError}
+            disabled={isLoading}
             autoFocus
-            required
           />
           <Button
             disabled={timeToResubmit > 0 || isLoading}
             type="submit"
             variant="contained"
             color="secondary"
-            onClick={onResetTimeToResubmitClick}
           >
             {isLoading ? "Заготовка для Loader" : "Получить повторно"}
           </Button>
