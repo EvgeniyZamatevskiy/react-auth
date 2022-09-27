@@ -11,7 +11,7 @@ import {
   setPhoneNumberVerificationStatus,
   setTimeToResubmit
 } from "../../redux/auth/slice"
-import "./phoneVerification.scss"
+import "./index.scss"
 
 export const PhoneVerification = () => {
 

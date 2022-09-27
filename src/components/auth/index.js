@@ -4,7 +4,7 @@ import MuiPhoneNumber from "material-ui-phone-number"
 import {useDispatch, useSelector} from "react-redux"
 import {setPhoneNumber} from "../../redux/auth/slice"
 import {useSendCodeMutation} from "../../redux/api/smsAuthApi"
-import "./auth.scss"
+import "./index.scss"
 
 export const Auth = () => {
 
