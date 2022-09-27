@@ -2,7 +2,7 @@ import React from "react"
 import {Button} from "@mui/material"
 import MuiPhoneNumber from "material-ui-phone-number"
 import {useDispatch, useSelector} from "react-redux"
-import {setPhoneNumber} from "../../redux/auth/slice"
+import {setPhoneNumber} from "../../redux/slices/auth"
 import {useSendCodeMutation} from "../../redux/api/smsAuthApi"
 import "./index.scss"
 

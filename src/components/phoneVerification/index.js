@@ -10,7 +10,7 @@ import {
   setErrorMessage,
   setPhoneNumberVerificationStatus,
   setTimeToResubmit
-} from "../../redux/auth/slice"
+} from "../../redux/slices/auth"
 import "./index.scss"
 
 export const PhoneVerification = () => {

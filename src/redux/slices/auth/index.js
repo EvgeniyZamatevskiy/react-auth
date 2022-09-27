@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit"
-import {EMPTY_STRING} from "../../const"
-import {smsAuthApi} from "../api/smsAuthApi"
+import {EMPTY_STRING} from "../../../const"
+import {smsAuthApi} from "../../api/smsAuthApi"
 
 const initialState = {
   timeToResubmit: 60,

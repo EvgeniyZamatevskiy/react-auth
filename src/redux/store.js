@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit"
-import authSlice from "./auth/slice"
+import authSlice from "./slices/auth"
 import {smsAuthApi} from "./api"
 
 export const store = configureStore({
