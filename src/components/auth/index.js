@@ -21,7 +21,9 @@ export const Auth = () => {
   const onSendCodeSubmit = async (event) => {
     event.preventDefault()
 
-    await sendCode(phoneNumber)
+    const token = await sendCode(phoneNumber).unwrap()
+
+    //console.log(token) В этом случае token приходит
   }
 
   return (

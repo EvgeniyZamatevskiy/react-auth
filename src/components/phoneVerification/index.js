@@ -19,7 +19,7 @@ export const PhoneVerification = () => {
 
   const auth = useSelector(state => state.auth)
 
-  const [sendCode] = useSendCodeMutation()
+  const [sendCode, {data: tokenResult}] = useSendCodeMutation()
   const [phoneNumberVerification, {isLoading}] = usePhoneNumberVerificationMutation()
 
   const {timeToResubmit, code, phoneNumberVerificationStatus, errorMessage, phoneNumber, token} = auth
@@ -34,7 +34,7 @@ export const PhoneVerification = () => {
   }, [timeToResubmit])
 
   const handlePhoneNumberVerification = async () => {
-    await phoneNumberVerification({token, code})
+    await phoneNumberVerification({token, code}).unwrap()
   }
 
   useEffect(() => {
@@ -42,6 +42,12 @@ export const PhoneVerification = () => {
       handlePhoneNumberVerification()
     }
   }, [code.length])
+
+  useEffect(() => {
+    if (!tokenResult) return
+
+
+  }, [tokenResult])
 
   const resetErrorMessage = () => {
     if (errorMessage && phoneNumberVerificationStatus === "error") {
@@ -65,7 +71,7 @@ export const PhoneVerification = () => {
 
     resetErrorMessage()
     dispatch(resetTimeToResubmit())
-    await sendCode(phoneNumber)
+    await sendCode(phoneNumber).unwrap()
   }
 
   return (
