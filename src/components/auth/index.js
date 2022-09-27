@@ -1,9 +1,9 @@
 import React from "react"
 import {Button} from "@mui/material"
 import MuiPhoneNumber from "material-ui-phone-number"
-import {useSendCodeMutation} from "../../services/CodeService"
 import {useDispatch, useSelector} from "react-redux"
 import {setPhoneNumber} from "../../redux/auth/slice"
+import {useSendCodeMutation} from "../../redux/api/smsAuthApi"
 import "./auth.scss"
 
 export const Auth = () => {

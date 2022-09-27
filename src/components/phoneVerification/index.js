@@ -3,7 +3,7 @@ import {Button, TextField} from "@mui/material"
 import {getCurrentTime} from "../../utils"
 import {useDispatch, useSelector} from "react-redux"
 import {EMPTY_STRING} from "../../const"
-import {usePhoneNumberVerificationMutation, useSendCodeMutation} from "../../services/CodeService"
+import {usePhoneNumberVerificationMutation, useSendCodeMutation} from "../../redux/api/smsAuthApi"
 import {
   resetTimeToResubmit,
   setCode,

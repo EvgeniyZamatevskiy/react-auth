@@ -1,8 +1,8 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
-import {EMPTY_STRING} from "../const"
+import {EMPTY_STRING} from "../../const"
 
-export const authApi = createApi({
-  reducerPath: "authApi",
+export const smsAuthApi = createApi({
+  reducerPath: "smsAuthApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://5.44.41.26:1488/",
   }),
@@ -31,4 +31,4 @@ export const authApi = createApi({
   }),
 })
 
-export const {useSendCodeMutation, usePhoneNumberVerificationMutation} = authApi
+export const {useSendCodeMutation, usePhoneNumberVerificationMutation} = smsAuthApi
