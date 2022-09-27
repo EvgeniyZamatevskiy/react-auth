@@ -20,8 +20,8 @@ export const Auth = () => {
             autoFocus
             fullWidth
           />
-          <Button type="submit" variant="contained" color="secondary">
-            Получить код
+          <Button type="submit" variant="contained" color="secondary" disabled={isLoading}>
+            {isLoading ? "Заготовка для Loader" : "Получить код"}
           </Button>
         </form>
 

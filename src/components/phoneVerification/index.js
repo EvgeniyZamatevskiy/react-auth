@@ -60,13 +60,13 @@ export const PhoneVerification = () => {
             required
           />
           <Button
-            disabled={timeToResubmit > 0}
+            disabled={timeToResubmit > 0 || isLoading}
             type="submit"
             variant="contained"
             color="secondary"
             onClick={onResetTimeToResubmitClick}
           >
-            Получить повторно
+            {isLoading ? "Заготовка для Loader" : "Получить повторно"}
           </Button>
         </form>
 
