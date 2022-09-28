@@ -1,46 +1,45 @@
-import {createSlice} from "@reduxjs/toolkit"
-import {EMPTY_STRING} from "../../../const"
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   timeToResubmit: 60,
-  code: EMPTY_STRING,
-  errorMessage: EMPTY_STRING,
+  code: "",
+  errorMessage: "",
   phoneNumberVerificationStatus: "idle",
-  phoneNumber: EMPTY_STRING,
+  phoneNumber: "",
   authStatus: "auth",
-  token: EMPTY_STRING,
-}
+  token: "",
+};
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     setTimeToResubmit(state) {
-      state.timeToResubmit = state.timeToResubmit - 1
+      state.timeToResubmit = state.timeToResubmit - 1;
     },
     resetTimeToResubmit(state) {
-      state.timeToResubmit = 60
+      state.timeToResubmit = 60;
     },
     setCode(state, action) {
-      state.code = action.payload
+      state.code = action.payload;
     },
     setPhoneNumber(state, action) {
-      state.phoneNumber = action.payload
+      state.phoneNumber = action.payload;
     },
     setPhoneNumberVerificationStatus(state, action) {
-      state.phoneNumberVerificationStatus = action.payload
+      state.phoneNumberVerificationStatus = action.payload;
     },
     setErrorMessage(state, action) {
-      state.errorMessage = action.payload
+      state.errorMessage = action.payload;
     },
     setToken(state, action) {
-      state.token = action.payload
+      state.token = action.payload;
     },
     setAuthStatus(state, action) {
-      state.authStatus = action.payload
+      state.authStatus = action.payload;
     },
   },
-})
+});
 
 export const {
   setTimeToResubmit,
@@ -49,7 +48,7 @@ export const {
   setPhoneNumber,
   setPhoneNumberVerificationStatus,
   setToken,
-  setAuthStatus
-} = authSlice.actions
+  setAuthStatus,
+} = authSlice.actions;
 
-export default authSlice.reducer
+export default authSlice.reducer;

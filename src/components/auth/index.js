@@ -1,30 +1,40 @@
-import React from "react"
-import {Button} from "@mui/material"
-import MuiPhoneNumber from "material-ui-phone-number"
-import {useDispatch, useSelector} from "react-redux"
-import {setAuthStatus, setPhoneNumber, setToken} from "../../redux/slices/auth"
-import {useSendCodeMutation} from "../../redux/api/smsAuthApi"
-import "./index.scss"
+import React from "react";
+import "./index.scss";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAuthStatus,
+  setPhoneNumber,
+  setToken,
+} from "../../redux/slices/login";
+import { useSendCodeMutation } from "../../redux/api/auth";
+
+import PhoneInput from "react-phone-input-2";
+import ru from "react-phone-input-2/lang/ru.json";
+import "react-phone-input-2/lib/material.css";
+
+import { Button } from "@mui/material";
 
 export const Auth = () => {
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
+  const phoneNumber = useSelector((state) => state.auth.phoneNumber);
 
-  const phoneNumber = useSelector(state => state.auth.phoneNumber)
-
-  const [sendCode, {isLoading}] = useSendCodeMutation()
+  const [sendCode, { isLoading }] = useSendCodeMutation();
 
   const onPhoneNumberChange = (value) => {
-    dispatch(setPhoneNumber(value))
-  }
+    console.log(value);
+
+    dispatch(setPhoneNumber(value));
+  };
 
   const onSendCodeSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const payload = await sendCode(phoneNumber).unwrap()
-    dispatch(setToken(payload.token))
-    dispatch(setAuthStatus("enterCode"))
-  }
+    const payload = await sendCode(phoneNumber).unwrap();
+    dispatch(setToken(payload.token));
+    dispatch(setAuthStatus("enterCode"));
+  };
 
   return (
     <div className="auth">
@@ -32,24 +42,25 @@ export const Auth = () => {
         <h2>Войти в профиль</h2>
 
         <form className="auth__form" onSubmit={onSendCodeSubmit}>
-          <MuiPhoneNumber
+          <PhoneInput
+            onlyCountries={["ru", "by", "am", "kg", "ua", "kz"]}
+            country="ru"
             value={phoneNumber}
             onChange={onPhoneNumberChange}
-            defaultCountry="ru"
-            variant="outlined"
-            color="secondary"
-            label="Контактный телефон"
-            id="tel"
-            required
-            autoFocus
-            fullWidth
+            specialLabel="Контактный телефон"
+            localization={ru}
           />
-          <Button type="submit" variant="contained" color="secondary" disabled={isLoading}>
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            disabled={isLoading}
+          >
             {isLoading ? "Заготовка для Loader" : "Получить код"}
           </Button>
         </form>
-
       </div>
     </div>
-  )
-}
+  );
+};

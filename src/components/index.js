@@ -1,2 +1,4 @@
-export {Auth} from "./auth"
-export {PhoneVerification} from "./phoneVerification"
+import { Auth } from "./auth";
+import { PhoneVerification } from "./phoneVerification";
+
+export { Auth, PhoneVerification };

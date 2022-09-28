@@ -1,11 +1,14 @@
-import {configureStore} from "@reduxjs/toolkit"
-import authSlice from "./slices/auth"
-import {smsAuthApi} from "./api"
+import { configureStore } from "@reduxjs/toolkit";
+
+import { authApi } from "./api/auth";
+
+import authSlice from "./slices/login";
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
-    [smsAuthApi.reducerPath]: smsAuthApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(smsAuthApi.middleware),
-})
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(authApi.middleware),
+});
