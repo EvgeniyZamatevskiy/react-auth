@@ -32,6 +32,12 @@ export const Auth = () => {
 
   const onPhoneNumberChange = (value) => dispatch(setPhoneNumber(value));
 
+  const onInputKeyPressHandler = ({ key }) => {
+    if (key !== "Enter") return;
+
+    sendCode(phoneNumber);
+  };
+
   const onButtonClickHandler = () => sendCode(phoneNumber);
 
   return (
@@ -47,6 +53,7 @@ export const Auth = () => {
             onChange={onPhoneNumberChange}
             specialLabel="Контактный телефон"
             localization={ru}
+            onKeyDown={onInputKeyPressHandler}
           />
 
           <Button

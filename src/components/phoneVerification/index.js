@@ -19,63 +19,69 @@ import { Button, TextField } from "@mui/material";
 import { getRemainingTime } from "../../utils";
 
 export const PhoneVerification = () => {
-  const dispatch = useDispatch();
-
-  const auth = useSelector((state) => state.auth);
-
-  const [sendCode] = useSendCodeMutation();
-
-  const [phoneNumberVerification, { isLoading }] =
-    usePhoneNumberVerificationMutation();
-
   const {
     timeToResubmit,
     code,
     phoneNumberVerificationStatus,
     errorMessage,
     phoneNumber,
-    token,
-  } = auth;
+    SMSCodeToken,
+  } = useSelector((state) => state.auth);
 
-  const isError = phoneNumberVerificationStatus === "error";
+  const dispatch = useDispatch();
+
+  const [sendCode, { data: sendCodeData, isLoading: isSendCodeLoading }] =
+    useSendCodeMutation();
+
+  const [
+    phoneNumberVerification,
+    {
+      data: phoneNumberVerificationData,
+      isLoading: isPhoneNumberVerificationLoading,
+    },
+  ] = usePhoneNumberVerificationMutation();
 
   useEffect(() => {
-    const timerId =
-      timeToResubmit > 0 &&
-      setInterval(() => {
-        dispatch(decreaseTimeToResubmit());
-      }, 1000);
+    if (!sendCodeData) return;
+
+    dispatch(setSMSCodeToken(sendCodeData.token));
+  }, [sendCodeData]);
+
+  useEffect(() => {
+    if (timeToResubmit === 0) return;
+
+    const timerId = setInterval(() => dispatch(decreaseTimeToResubmit()), 1000);
 
     return () => clearInterval(timerId);
   }, [timeToResubmit]);
 
-  const handlePhoneNumberVerification = async () => {
-    await phoneNumberVerification({ token, code }).unwrap();
+  useEffect(() => {
+    if (!phoneNumberVerificationData) return;
+
+    console.log(phoneNumberVerificationData);
+
     dispatch(setPhoneNumberVerificationStatus("success"));
-  };
+  }, [phoneNumberVerificationData]);
+
+  const isError = phoneNumberVerificationStatus === "error";
 
   useEffect(() => {
     if (code.length === 6) {
-      handlePhoneNumberVerification();
+      phoneNumberVerification({ token: SMSCodeToken, code });
     }
   }, [code.length]);
 
-  const onInputChange = (event) => {
-    const { value } = event.currentTarget;
+  const onInputChange = (e) => {
+    const value = e.target.value;
+    if (!value) return;
 
-    if (!isNaN(value)) {
-      dispatch(setCode(value));
-    }
+    dispatch(setCode(value));
   };
 
-  const onResendCodeSubmit = async (event) => {
-    event.preventDefault();
-
+  const onButtonClickHandler = () => {
     dispatch(resetTimeToResubmit());
 
-    const response = await sendCode(phoneNumber).unwrap();
-
-    dispatch(setSMSCodeToken(response.token));
+    sendCode(phoneNumber);
   };
 
   return (
@@ -90,7 +96,7 @@ export const PhoneVerification = () => {
           </div>
         </div>
 
-        <form className="phoneVerification__form" onSubmit={onResendCodeSubmit}>
+        <div className="phoneVerification__form">
           <TextField
             value={code}
             onChange={onInputChange}
@@ -99,19 +105,26 @@ export const PhoneVerification = () => {
             label="Код из СМС"
             helperText={errorMessage}
             error={isError}
-            disabled={isLoading}
+            disabled={isPhoneNumberVerificationLoading || isSendCodeLoading}
             autoFocus
           />
 
           <Button
-            disabled={timeToResubmit > 0 || isLoading}
+            disabled={
+              timeToResubmit > 0 ||
+              isPhoneNumberVerificationLoading ||
+              isSendCodeLoading
+            }
             type="submit"
             variant="contained"
             color="secondary"
+            onClick={onButtonClickHandler}
           >
-            {isLoading ? "Заготовка для Loader" : "Получить повторно"}
+            {isPhoneNumberVerificationLoading || isSendCodeLoading
+              ? "Заготовка для Loader"
+              : "Получить повторно"}
           </Button>
-        </form>
+        </div>
 
         <div className="time">
           {timeToResubmit > 0 &&

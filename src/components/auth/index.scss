@@ -16,6 +16,6 @@
   &__form {
     margin-top: 40px;
     @include flex(column, space-between, stretch);
-    height: 150px;
+    height: 120px;
   }
 }
