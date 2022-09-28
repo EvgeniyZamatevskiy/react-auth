@@ -2,14 +2,12 @@ import React, {useEffect} from "react"
 import {Button, TextField} from "@mui/material"
 import {getCurrentTime} from "../../utils"
 import {useDispatch, useSelector} from "react-redux"
-import {EMPTY_STRING} from "../../const"
 import {usePhoneNumberVerificationMutation, useSendCodeMutation} from "../../redux/api/smsAuthApi"
 import {
   resetTimeToResubmit,
   setCode,
-  setErrorMessage,
   setPhoneNumberVerificationStatus,
-  setTimeToResubmit
+  setTimeToResubmit, setToken
 } from "../../redux/slices/auth"
 import "./index.scss"
 
@@ -19,7 +17,7 @@ export const PhoneVerification = () => {
 
   const auth = useSelector(state => state.auth)
 
-  const [sendCode, {data: tokenResult}] = useSendCodeMutation()
+  const [sendCode] = useSendCodeMutation()
   const [phoneNumberVerification, {isLoading}] = usePhoneNumberVerificationMutation()
 
   const {timeToResubmit, code, phoneNumberVerificationStatus, errorMessage, phoneNumber, token} = auth
@@ -35,6 +33,7 @@ export const PhoneVerification = () => {
 
   const handlePhoneNumberVerification = async () => {
     await phoneNumberVerification({token, code}).unwrap()
+    dispatch(setPhoneNumberVerificationStatus("success"))
   }
 
   useEffect(() => {
@@ -43,22 +42,7 @@ export const PhoneVerification = () => {
     }
   }, [code.length])
 
-  useEffect(() => {
-    if (!tokenResult) return
-
-
-  }, [tokenResult])
-
-  const resetErrorMessage = () => {
-    if (errorMessage && phoneNumberVerificationStatus === "error") {
-      dispatch(setErrorMessage(EMPTY_STRING))
-      dispatch(setPhoneNumberVerificationStatus("idle"))
-    }
-  }
-
   const onInputChange = (event) => {
-    resetErrorMessage()
-
     const {value} = event.currentTarget
 
     if (!isNaN(value)) {
@@ -69,9 +53,9 @@ export const PhoneVerification = () => {
   const onResendCodeSubmit = async (event) => {
     event.preventDefault()
 
-    resetErrorMessage()
     dispatch(resetTimeToResubmit())
-    await sendCode(phoneNumber).unwrap()
+    const response = await sendCode(phoneNumber).unwrap()
+    dispatch(setToken(response.token))
   }
 
   return (

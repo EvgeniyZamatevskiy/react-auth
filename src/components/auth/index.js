@@ -2,7 +2,7 @@ import React from "react"
 import {Button} from "@mui/material"
 import MuiPhoneNumber from "material-ui-phone-number"
 import {useDispatch, useSelector} from "react-redux"
-import {setPhoneNumber} from "../../redux/slices/auth"
+import {setAuthStatus, setPhoneNumber, setToken} from "../../redux/slices/auth"
 import {useSendCodeMutation} from "../../redux/api/smsAuthApi"
 import "./index.scss"
 
@@ -21,9 +21,9 @@ export const Auth = () => {
   const onSendCodeSubmit = async (event) => {
     event.preventDefault()
 
-    const token = await sendCode(phoneNumber).unwrap()
-
-    //console.log(token) В этом случае token приходит
+    const payload = await sendCode(phoneNumber).unwrap()
+    dispatch(setToken(payload.token))
+    dispatch(setAuthStatus("enterCode"))
   }
 
   return (

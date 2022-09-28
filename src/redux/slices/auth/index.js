@@ -1,6 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit"
 import {EMPTY_STRING} from "../../../const"
-import {smsAuthApi} from "../../api/smsAuthApi"
 
 const initialState = {
   timeToResubmit: 60,
@@ -34,29 +33,12 @@ const authSlice = createSlice({
     setErrorMessage(state, action) {
       state.errorMessage = action.payload
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addMatcher(
-        smsAuthApi.endpoints.sendCode.matchFulfilled,
-        (state, {payload}) => {
-          state.token = payload.token
-          state.authStatus = "enterCode"
-        }
-      )
-      .addMatcher(
-        smsAuthApi.endpoints.phoneNumberVerification.matchFulfilled,
-        (state, {payload}) => {
-          state.phoneNumberVerificationStatus = "success"
-        }
-      )
-      .addMatcher(
-        smsAuthApi.endpoints.phoneNumberVerification.matchRejected,
-        (state, {payload}) => {
-          state.errorMessage = "Неверные данные доступа"
-          state.phoneNumberVerificationStatus = "error"
-        }
-      )
+    setToken(state, action) {
+      state.token = action.payload
+    },
+    setAuthStatus(state, action) {
+      state.authStatus = action.payload
+    },
   },
 })
 
@@ -65,8 +47,9 @@ export const {
   resetTimeToResubmit,
   setCode,
   setPhoneNumber,
-  setErrorMessage,
-  setPhoneNumberVerificationStatus
+  setPhoneNumberVerificationStatus,
+  setToken,
+  setAuthStatus
 } = authSlice.actions
 
 export default authSlice.reducer
