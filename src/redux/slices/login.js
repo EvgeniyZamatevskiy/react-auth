@@ -8,6 +8,7 @@ const initialState = {
   phoneNumber: "",
   authStatus: "auth",
   SMSCodeToken: "",
+  countryCode: "RU",
 };
 
 const authSlice = createSlice({
@@ -25,6 +26,9 @@ const authSlice = createSlice({
     },
     setPhoneNumber(state, action) {
       state.phoneNumber = action.payload;
+    },
+    setCountryCode(state, action) {
+      state.dialCode = action.payload;
     },
     setPhoneNumberVerificationStatus(state, action) {
       state.phoneNumberVerificationStatus = action.payload;
@@ -46,6 +50,7 @@ export const {
   resetTimeToResubmit,
   setCode,
   setPhoneNumber,
+  setCountryCode,
   setPhoneNumberVerificationStatus,
   setErrorMessage,
   setSMSCodeToken,

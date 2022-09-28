@@ -102,7 +102,8 @@ export const PhoneVerification = () => {
           <div>Код отправлен</div>
 
           <div>
-            На номер <span className="notification__phone">{phoneNumber}</span>
+            На номер{" "}
+            <span className="notification__phone">{`+${phoneNumber}`}</span>
           </div>
         </div>
 
