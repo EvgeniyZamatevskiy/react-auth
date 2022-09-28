@@ -17,5 +17,15 @@
     margin-top: 40px;
     @include flex(column, space-between, stretch);
     height: 120px;
+
+    .react-tel-input .form-control {
+      border-width: 2px;
+
+      &:focus {
+        border-color: #9c27b0;
+        border-width: 2px;
+        box-shadow: none;
+      }
+    }
   }
 }
