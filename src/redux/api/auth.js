@@ -7,14 +7,10 @@ export const authApi = createApi({
   }),
   endpoints: (build) => ({
     sendCode: build.mutation({
-      query: (phoneNumber) => {
-        const convertedPhoneNumber = phoneNumber.replace(/[^\d]/g, "");
-
-        return {
-          method: "POST",
-          body: { phoneNumber: convertedPhoneNumber },
-        };
-      },
+      query: (phoneNumber) => ({
+        method: "POST",
+        body: { phoneNumber },
+      }),
     }),
     phoneNumberVerification: build.mutation({
       query: (data) => ({

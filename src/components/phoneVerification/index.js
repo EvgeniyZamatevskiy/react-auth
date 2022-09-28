@@ -10,8 +10,8 @@ import {
   resetTimeToResubmit,
   setCode,
   setPhoneNumberVerificationStatus,
-  setTimeToResubmit,
-  setToken,
+  decreaseTimeToResubmit,
+  setSMSCodeToken,
 } from "../../redux/slices/login";
 
 import { Button, TextField } from "@mui/material";
@@ -43,7 +43,7 @@ export const PhoneVerification = () => {
     const timerId =
       timeToResubmit > 0 &&
       setInterval(() => {
-        dispatch(setTimeToResubmit());
+        dispatch(decreaseTimeToResubmit());
       }, 1000);
 
     return () => clearInterval(timerId);
@@ -72,8 +72,10 @@ export const PhoneVerification = () => {
     event.preventDefault();
 
     dispatch(resetTimeToResubmit());
+
     const response = await sendCode(phoneNumber).unwrap();
-    dispatch(setToken(response.token));
+
+    dispatch(setSMSCodeToken(response.token));
   };
 
   return (

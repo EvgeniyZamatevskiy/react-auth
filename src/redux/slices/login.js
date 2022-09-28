@@ -7,15 +7,15 @@ const initialState = {
   phoneNumberVerificationStatus: "idle",
   phoneNumber: "",
   authStatus: "auth",
-  token: "",
+  SMSCodeToken: "",
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setTimeToResubmit(state) {
-      state.timeToResubmit = state.timeToResubmit - 1;
+    decreaseTimeToResubmit(state) {
+      state.timeToResubmit -= 1;
     },
     resetTimeToResubmit(state) {
       state.timeToResubmit = 60;
@@ -32,8 +32,8 @@ const authSlice = createSlice({
     setErrorMessage(state, action) {
       state.errorMessage = action.payload;
     },
-    setToken(state, action) {
-      state.token = action.payload;
+    setSMSCodeToken(state, action) {
+      state.SMSCodeToken = action.payload;
     },
     setAuthStatus(state, action) {
       state.authStatus = action.payload;
@@ -42,12 +42,12 @@ const authSlice = createSlice({
 });
 
 export const {
-  setTimeToResubmit,
+  decreaseTimeToResubmit,
   resetTimeToResubmit,
   setCode,
   setPhoneNumber,
   setPhoneNumberVerificationStatus,
-  setToken,
+  setSMSCodeToken,
   setAuthStatus,
 } = authSlice.actions;
 

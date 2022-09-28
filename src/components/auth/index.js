@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./index.scss";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAuthStatus,
   setPhoneNumber,
-  setToken,
+  setSMSCodeToken,
 } from "../../redux/slices/login";
 import { useSendCodeMutation } from "../../redux/api/auth";
 
@@ -16,32 +16,30 @@ import "react-phone-input-2/lib/material.css";
 import { Button } from "@mui/material";
 
 export const Auth = () => {
-  const dispatch = useDispatch();
-
   const phoneNumber = useSelector((state) => state.auth.phoneNumber);
 
-  const [sendCode, { isLoading }] = useSendCodeMutation();
+  const dispatch = useDispatch();
 
-  const onPhoneNumberChange = (value) => {
-    console.log(value);
+  const [sendCode, { data: sendCodeData, isLoading: isSendCodeLoading }] =
+    useSendCodeMutation();
 
-    dispatch(setPhoneNumber(value));
-  };
+  useEffect(() => {
+    if (!sendCodeData) return;
 
-  const onSendCodeSubmit = async (event) => {
-    event.preventDefault();
-
-    const payload = await sendCode(phoneNumber).unwrap();
-    dispatch(setToken(payload.token));
+    dispatch(setSMSCodeToken(sendCodeData.token));
     dispatch(setAuthStatus("enterCode"));
-  };
+  }, [sendCodeData]);
+
+  const onPhoneNumberChange = (value) => dispatch(setPhoneNumber(value));
+
+  const onButtonClickHandler = () => sendCode(phoneNumber);
 
   return (
     <div className="auth">
       <div className="auth__container">
         <h2>Войти в профиль</h2>
 
-        <form className="auth__form" onSubmit={onSendCodeSubmit}>
+        <div className="auth__form">
           <PhoneInput
             onlyCountries={["ru", "by", "am", "kg", "ua", "kz"]}
             country="ru"
@@ -55,11 +53,12 @@ export const Auth = () => {
             type="submit"
             variant="contained"
             color="secondary"
-            disabled={isLoading}
+            disabled={isSendCodeLoading}
+            onClick={onButtonClickHandler}
           >
-            {isLoading ? "Заготовка для Loader" : "Получить код"}
+            {isSendCodeLoading ? "Заготовка для Loader" : "Получить код"}
           </Button>
-        </form>
+        </div>
       </div>
     </div>
   );
