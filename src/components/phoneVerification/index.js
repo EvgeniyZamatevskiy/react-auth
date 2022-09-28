@@ -73,7 +73,8 @@ export const PhoneVerification = () => {
 
   const onInputChange = (e) => {
     const value = e.target.value;
-    if (!value) return;
+
+    if (!Number.isInteger(Number(value))) return;
 
     dispatch(setCode(value));
   };
@@ -91,6 +92,7 @@ export const PhoneVerification = () => {
 
         <div className="notification">
           <div>Код отправлен</div>
+
           <div>
             На номер <span className="notification__phone">{phoneNumber}</span>
           </div>
@@ -107,6 +109,7 @@ export const PhoneVerification = () => {
             error={isError}
             disabled={isPhoneNumberVerificationLoading || isSendCodeLoading}
             autoFocus
+            inputProps={{ maxLength: 6 }}
           />
 
           <Button
