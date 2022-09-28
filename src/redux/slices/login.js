@@ -47,6 +47,7 @@ export const {
   setCode,
   setPhoneNumber,
   setPhoneNumberVerificationStatus,
+  setErrorMessage,
   setSMSCodeToken,
   setAuthStatus,
 } = authSlice.actions;

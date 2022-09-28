@@ -12,6 +12,7 @@ import {
   setPhoneNumberVerificationStatus,
   decreaseTimeToResubmit,
   setSMSCodeToken,
+  setErrorMessage,
 } from "../../redux/slices/login";
 
 import { Button, TextField } from "@mui/material";
@@ -38,6 +39,7 @@ export const PhoneVerification = () => {
     {
       data: phoneNumberVerificationData,
       isLoading: isPhoneNumberVerificationLoading,
+      error: phoneNumberVerificationError,
     },
   ] = usePhoneNumberVerificationMutation();
 
@@ -62,6 +64,12 @@ export const PhoneVerification = () => {
 
     dispatch(setPhoneNumberVerificationStatus("success"));
   }, [phoneNumberVerificationData]);
+
+  useEffect(() => {
+    if (!phoneNumberVerificationError) return;
+
+    dispatch(setErrorMessage("Неверный код"));
+  }, [phoneNumberVerificationError]);
 
   const isError = phoneNumberVerificationStatus === "error";
 
@@ -106,7 +114,7 @@ export const PhoneVerification = () => {
             color="secondary"
             label="Код из СМС"
             helperText={errorMessage}
-            error={isError}
+            error={!!errorMessage}
             disabled={isPhoneNumberVerificationLoading || isSendCodeLoading}
             autoFocus
             inputProps={{ maxLength: 6 }}
