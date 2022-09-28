@@ -15,31 +15,31 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    decreaseTimeToResubmit(state) {
+    decreaseTimeToResubmit: (state) => {
       state.timeToResubmit -= 1;
     },
-    resetTimeToResubmit(state) {
+    resetTimeToResubmit: (state) => {
       state.timeToResubmit = 60;
     },
-    setCode(state, action) {
+    setCode: (state, action) => {
       state.code = action.payload;
     },
-    setPhoneNumber(state, action) {
+    setPhoneNumber: (state, action) => {
       state.phoneNumber = action.payload;
     },
-    setCountryCode(state, action) {
+    setCountryCode: (state, action) => {
       state.dialCode = action.payload;
     },
-    setPhoneNumberVerificationStatus(state, action) {
+    setPhoneNumberVerificationStatus: (state, action) => {
       state.phoneNumberVerificationStatus = action.payload;
     },
-    setErrorMessage(state, action) {
+    setErrorMessage: (state, action) => {
       state.errorMessage = action.payload;
     },
-    setSMSCodeToken(state, action) {
+    setSMSCodeToken: (state, action) => {
       state.SMSCodeToken = action.payload;
     },
-    setAuthStatus(state, action) {
+    setAuthStatus: (state, action) => {
       state.authStatus = action.payload;
     },
   },
